@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SOS Player Development</title>
+<meta name="description" content="A 12-week soccer development program for players ages 11–15 in Davie and Miramar, FL. Position-specific coaching plus a personal home plan.">
+<meta property="og:title" content="SOS Player Development">
+<meta property="og:description" content="A 12-week soccer development program for players ages 11–15 in Davie and Miramar, FL. Position-specific coaching plus a personal home plan.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0f4d30">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230f4d30'/%3E%3Ctext x='32' y='42' font-family='Arial' font-weight='700' font-size='24' text-anchor='middle' fill='%23f0b429'%3ESOS%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: a printed program sheet — bold condensed headline band, then a single reading column with pitch-line dividers */
+:root{
+  --bg:#f4f7f5; --surface:#ffffff; --ink:#13202a; --muted:#53636d; --line:#d5dfda;
+  --pitch:#1d7a4c; --pitch-deep:#0f4d30; --pitch-soft:#e2f0e8; --chalk:#f0b429; --on-pitch:#ffffff;
+  --f-display:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --f-body:"Source Sans 3","Segoe UI",system-ui,sans-serif;
+  --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e191f; --surface:#15232b; --ink:#e7eff1; --muted:#9fb2b8; --line:#283a43;
+  --pitch:#4cc28a; --pitch-deep:#123b29; --pitch-soft:#173a2c; --chalk:#f5c451; --on-pitch:#f2fbf6; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e191f; --surface:#15232b; --ink:#e7eff1; --muted:#9fb2b8; --line:#283a43;
+  --pitch:#4cc28a; --pitch-deep:#123b29; --pitch-soft:#173a2c; --chalk:#f5c451; --on-pitch:#f2fbf6; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:17px;line-height:1.6}
+.in{max-width:980px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.05;margin:0;text-transform:uppercase}
+h1{font-size:clamp(2.6rem,8vw,4.6rem);font-weight:800;letter-spacing:.005em}
+h2{font-size:clamp(1.8rem,4vw,2.3rem);font-weight:700;letter-spacing:.02em}
+h3{font-size:1.3rem;font-weight:700;letter-spacing:.03em}
+p{margin:0;max-width:64ch}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.09em;text-transform:uppercase;color:var(--pitch)}
+.hero{background:var(--pitch-deep);color:var(--on-pitch);position:relative;overflow:hidden}
+.hero .in{padding-block:48px 44px;display:grid;gap:18px;position:relative}
+.hero .eyebrow{color:var(--chalk)}
+.hero p{font-size:1.15rem;opacity:.92}
+.hero::after{content:"";position:absolute;right:-120px;top:50%;width:300px;height:300px;transform:translateY(-50%);border:3px solid color-mix(in srgb,var(--on-pitch) 18%,transparent);border-radius:50%;pointer-events:none}
+.hero::before{content:"";position:absolute;right:28px;top:0;bottom:0;border-left:3px solid color-mix(in srgb,var(--on-pitch) 18%,transparent);pointer-events:none}
+.facts{display:flex;flex-wrap:wrap;gap:10px 22px;font-family:var(--f-mono);font-size:.85rem}
+.facts span{display:flex;gap:6px;align-items:baseline}
+.facts b{color:var(--chalk);font-weight:500}
+.cta{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.btn{font:700 1rem var(--f-body);border:0;border-radius:8px;padding:11px 18px;cursor:pointer;background:var(--chalk);color:#13202a;text-decoration:none;display:inline-block}
+.btn:focus-visible{outline:3px solid var(--on-pitch);outline-offset:2px}
+.btn.ghost{background:transparent;color:inherit;border:2px solid currentColor}
+.phone{font-family:var(--f-mono);font-size:1.05rem;user-select:all}
+main .in{display:grid;gap:0}
+section{display:grid;gap:18px;padding-block:52px;border-bottom:2px solid var(--line)}
+section:last-child{border-bottom:0}
+.lead{color:var(--muted);font-size:1.08rem}
+.steps{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(210px,1fr))}
+.steps>*{min-width:0}
+.step{display:grid;gap:8px;align-content:start;padding-top:12px;border-top:4px solid var(--pitch)}
+.step .wk{font-family:var(--f-mono);font-size:.8rem;color:var(--muted)}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.grid>*{min-width:0}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:18px;display:grid;gap:8px;align-content:start}
+.card.pick{border:2px solid var(--pitch)}
+.from{font-family:var(--f-mono);font-size:.9rem;color:var(--muted)}
+.from b{font-family:var(--f-display);font-size:1.7rem;color:var(--ink);font-weight:800}
+ul{margin:0;padding-left:1.15em;display:grid;gap:5px}
+.incl{list-style:none;padding:0;display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.incl li{display:grid;grid-template-columns:22px 1fr;gap:10px;min-width:0}
+.incl li::before{content:"";width:14px;height:14px;margin-top:.35em;border-radius:50%;background:var(--pitch)}
+.tests{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.tests>*{min-width:0}
+.tests h3{font-size:1.1rem;color:var(--pitch)}
+.pos{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}
+.pos .card h3{font-size:1.15rem}
+.pos .card p{color:var(--muted);font-size:.98rem}
+.phases{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.phases .card{border-top:5px solid var(--pitch)}
+.phases .card:nth-child(2){border-top-color:var(--chalk)}
+.phases .card:nth-child(3){border-top-color:var(--pitch-deep)}
+.week{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;min-width:560px;font-size:.97rem}
+th,td{text-align:left;vertical-align:top;padding:10px 14px;border-bottom:1px solid var(--line)}
+th{font-family:var(--f-display);text-transform:uppercase;letter-spacing:.04em;background:var(--pitch-soft)}
+tr:last-child td{border-bottom:0}
+td.t{font-family:var(--f-mono);font-size:.85rem;white-space:nowrap}
+details{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 16px}
+details+details{margin-top:10px}
+summary{cursor:pointer;font-weight:700}
+summary:focus-visible{outline:2px solid var(--pitch);outline-offset:3px}
+details p{margin-top:8px;color:var(--muted)}
+.contact{background:var(--pitch-soft);border-radius:12px;padding:24px;display:grid;gap:12px}
+.contact .btn{background:var(--pitch);color:var(--on-pitch)}
+.copied{font-family:var(--f-mono);font-size:.8rem;color:var(--pitch)}
+footer .in{padding-block:24px 40px;color:var(--muted);font-size:.9rem}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="in">
+    <span class="eyebrow">Sergio Ortiz Soccer · Davie · Miramar, FL</span>
+    <h1>SOS Player Development</h1>
+    <p>A 12-week program for players ages 11–15. Weekly on-field coaching built around your player's position, plus a personal home plan in the SOS training app.</p>
+    <div class="facts">
+      <span><b>Ages</b> 11–15</span><span><b>Length</b> 12 weeks</span><span><b>On field</b> 1×/week</span><span><b>At home</b> 4×30 min</span><span><b>Reports</b> Weeks 0 · 6 · 12</span>
+    </div>
+    <div class="cta">
+      <a class="btn" href="https://wa.me/19549180921?text=Hi!%20I%27m%20interested%20in%20SOS%20Player%20Development%20for%20my%20child." target="_blank" rel="noopener">Message us on WhatsApp</a>
+      <span class="phone">954-918-0921</span>
+    </div>
+  </div>
+</header>
+
+<main><div class="in">
+
+<section id="how">
+  <span class="eyebrow">How it works</span>
+  <h2>From evaluation to results</h2>
+  <div class="steps">
+    <div class="step"><span class="wk">Week 0</span><h3>Evaluation</h3><p>A 60-minute session where the coach evaluates the player's skills, speed and decisions in game situations.</p></div>
+    <div class="step"><span class="wk">Week 0</span><h3>Player Report</h3><p>A one-page report with 3 strengths, 3 goals and the plan. We go over it together with parents.</p></div>
+    <div class="step"><span class="wk">Weeks 1–12</span><h3>Train</h3><p>One on-field session per week and a home plan in the app. Progress is checked every week.</p></div>
+    <div class="step"><span class="wk">Weeks 6 &amp; 12</span><h3>Progress check</h3><p>The coach reviews what improved and adjusts the plan for the next block.</p></div>
+  </div>
+</section>
+
+<section id="included">
+  <span class="eyebrow">What's included</span>
+  <h2>Everything your player gets</h2>
+  <ul class="incl">
+    <li><span><strong>Initial evaluation</strong> by the coach: a 60-minute session to see where your player is.</span></li>
+    <li><span><strong>Weekly on-field session</strong> focused on technique and tactics for their position.</span></li>
+    <li><span><strong>Personal home plan</strong> in the SOS app: 4 days a week, 30 minutes max, with clear instructions for every exercise.</span></li>
+    <li><span><strong>Weekly check-in</strong> on effort, minutes played and any soreness, so training load stays safe.</span></li>
+    <li><span><strong>Three progress reports</strong> at weeks 0, 6 and 12, plus a parent meeting.</span></li>
+    <li><span><strong>Growth tracking</strong>: height and weight each month, so training adapts during growth spurts.</span></li>
+  </ul>
+</section>
+
+
+<section id="positions">
+  <span class="eyebrow">Built around the position</span>
+  <h2>Training by position</h2>
+  <p class="lead">Every player is rated on the key skills of their position. If we see a better fit, we train toward it and explain why.</p>
+  <div class="pos">
+    <div class="card"><h3>Center back</h3><p>Reading the play, heading, clean build-up with both feet, communication.</p></div>
+    <div class="card"><h3>Full back</h3><p>1v1 defending, recovery runs, timing the overlap, crossing on the run.</p></div>
+    <div class="card"><h3>Defensive midfielder</h3><p>Scanning, open body shape, line-breaking passes, switching play, covering.</p></div>
+    <div class="card"><h3>Central midfielder</h3><p>Receiving between the lines, turning, the final pass, arriving in the box.</p></div>
+    <div class="card"><h3>Winger</h3><p>Beating defenders 1v1, speed with the ball, cutting inside, finishing.</p></div>
+    <div class="card"><h3>Striker</h3><p>Runs in behind, holding up the ball, one-touch play, quick finishing.</p></div>
+  </div>
+</section>
+
+<section id="phases">
+  <span class="eyebrow">12 weeks, 3 phases</span>
+  <h2>The program</h2>
+  <div class="phases">
+    <div class="card"><span class="eyebrow">Weeks 1–4</span><h3>Foundation</h3><p>Bodyweight strength and core, clean movement, first touch and passing with both feet, scanning.</p></div>
+    <div class="card"><span class="eyebrow">Weeks 5–8</span><h3>Development</h3><p>Bands and light load, acceleration and jumping, position-specific skills in small-sided games.</p></div>
+    <div class="card"><span class="eyebrow">Weeks 9–12</span><h3>Game transfer</h3><p>Reactive speed and power, skills under pressure, real game decisions. Final progress check in week 12.</p></div>
+  </div>
+</section>
+
+<section id="week">
+  <span class="eyebrow">A typical week</span>
+  <h2>Works around team practice</h2>
+  <div class="week"><table>
+    <thead><tr><th>Day</th><th>Where</th><th>Focus</th><th>Time</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Monday</strong></td><td>On field with coach</td><td>Strength stations, technique, position work, 1v1 duels</td><td class="t">60 min</td></tr>
+      <tr><td><strong>Tuesday</strong></td><td>Home · app</td><td>Moderate full body: squats, push-ups, glute bridges and core</td><td class="t">20 min</td></tr>
+      <tr><td><strong>Wednesday</strong></td><td>Home · app</td><td>Moderate full body: lunges, rows, single-leg work and core</td><td class="t">20 min</td></tr>
+      <tr><td><strong>Thursday</strong></td><td>Home · app</td><td>Moderate full body: split squats, step-ups, calves and balance</td><td class="t">20 min</td></tr>
+      <tr><td><strong>Friday</strong></td><td>Home · app</td><td>Strength day: legs, upper body and core, plus the weekly check-in</td><td class="t">≤30 min</td></tr>
+      <tr><td><strong>Weekend</strong></td><td>Team game</td><td>Game with their team</td><td class="t">—</td></tr>
+    </tbody>
+  </table></div>
+  <p class="lead">Every home day starts with 5 minutes of mobility. Tuesday to Thursday are moderate because most players practice with their team those days: bodyweight only, never to failure. The harder strength work goes on Monday with the coach and on Friday at home. Optional ball work is added when there is energy left.</p>
+</section>
+
+<section id="options">
+  <span class="eyebrow">Two ways to join</span>
+  <h2>Choose your format</h2>
+  <div class="grid">
+    <div class="card"><h3>Small group</h3><p class="from">From <b>$200</b>/month</p><ul><li>Monday group of up to 8 players</li><li>Initial evaluation and 3 progress reports</li><li>Home plan in the app</li></ul></div>
+    <div class="card"><h3>1-on-1</h3><p class="from">From <b>$320</b>/month</p><ul><li>Private session, once or twice a week</li><li>Fully personalized home plan</li><li>Twice a week: the coach watches one of their games live every month (within 10 miles of Southwest Ranches)</li><li>Initial evaluation and 3 progress reports</li></ul></div>
+  </div>
+  <p class="lead">The initial evaluation is $50. The program is designed for 12 weeks and paid month by month, in advance, with no long-term contract. Message us on WhatsApp for details and available spots.</p>
+</section>
+
+<section id="faq">
+  <span class="eyebrow">Parents ask</span>
+  <h2>Questions</h2>
+  <div>
+    <details><summary>Does my player need to leave their team?</summary><p>No. The program is built to complement team training. Home sessions are short and adjust around practices and games.</p></details>
+    <details><summary>What equipment is needed at home?</summary><p>Nothing special for the first month: a chair, a step and a backpack with some books. Later we add resistance bands, light dumbbells and a medicine ball.</p></details>
+    <details><summary>Is it safe for growing kids?</summary><p>Yes. We track height monthly, keep jump and sprint volume low, and reduce load during growth spurts or when there is soreness.</p></details>
+    <details><summary>How do parents follow progress?</summary><p>Through the reports at weeks 0, 6 and 12 and the parent meeting. Parents give consent before the app account is created.</p></details>
+    <details><summary>Where do sessions take place?</summary><p>Mondays and Wednesdays in Davie. Tuesdays and Thursdays in Miramar. We confirm the exact location when you book the evaluation.</p></details>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="contact">
+    <span class="eyebrow">Book an evaluation</span>
+    <h2>Start with week 0</h2>
+    <p>Send us a WhatsApp message with your player's age, position and team. We will reply with pricing and the next evaluation date.</p>
+    <div class="cta">
+      <a class="btn" href="https://wa.me/19549180921?text=Hi!%20I%27d%20like%20to%20book%20an%20evaluation%20for%20SOS%20Player%20Development." target="_blank" rel="noopener">Message us on WhatsApp</a>
+      <span class="phone">954-918-0921</span>
+    </div>
+  </div>
+</section>
+
+</div></main>
+
+<footer><div class="in">Sergio Ortiz Soccer (SOS) · Player Development · Davie · Miramar, FL</div></footer>
+</body>
+</html>
